@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init:*)",
+      "Bash(git branch:*)",
+      "Bash(npm install)",
+      "Bash(npm create vite:*)",
+      "Bash(npm install tailwindcss postcss autoprefixer react-dropzone lucide-react marked html-to-image jspdf)",
+      "Bash(npx tailwindcss init -p)",
+      "Bash(timeout 5 npm run dev:*)",
+      "Bash(npm run dev)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm install -D tailwindcss@^3.4.0 postcss autoprefixer)"
+    ]
+  }
+}
