@@ -1,0 +1,43 @@
+# Node.js 依赖
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 构建输出
+dist/
+build/
+*.log
+
+# 测试
+coverage/
+test-results/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.tmp
+*.temp
+backend.log
+test-round2-rerun.log
+
+# 测试文件
+test-content.txt
+test-content-2.txt
+test-config-validation.js
+test-config-validation-round2.js
+TEST-REPORT.md
+TEST-REPORT-ROUND2.md

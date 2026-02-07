@@ -65,6 +65,10 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
 
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', message: 'API is running', timestamp: new Date().toISOString() });
+});
+
 // API 路由
 app.use('/api/files', fileRoutes);
 app.use('/api/ai', aiRoutes);
