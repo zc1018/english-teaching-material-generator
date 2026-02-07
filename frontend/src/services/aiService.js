@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '../constants/config';
+import { parseSseData, parseSseEvents } from '../utils/sseParser.js';
 
 /**
  * 生成教材 (流式响应)
@@ -22,39 +23,47 @@ export async function generateMaterial(content, config, onChunk, onComplete, onE
       throw new Error('生成失败');
     }
 
+    if (!response.body) {
+      throw new Error('响应流不可用');
+    }
+
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
+    console.log('[SSE] Stream reader started');
 
     while (true) {
       const { done, value } = await reader.read();
-      if (done) break;
+      console.log('[SSE] Read chunk:', { done, valueLength: value?.length });
+      if (done) { console.log('[SSE] Stream done, exiting loop'); break; }
 
       buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
+      const parsed = parseSseEvents(buffer);
+      buffer = parsed.rest;
 
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          try {
-            const data = JSON.parse(line.slice(6));
+      for (const eventData of parsed.events) {
+        console.log('[SSE] Processing event data:', eventData.substring(0, 100));
+        const data = parseSseData(eventData);
+        if (!data) { console.log('[SSE] No data from parser'); continue; }
+        console.log('[SSE] Parsed data type:', data.type);
 
-            if (data.type === 'text') {
-              onChunk(data.content);
-            } else if (data.type === 'done') {
-              onComplete();
-              return;
-            } else if (data.type === 'error') {
-              onError(new Error(data.error));
-              return;
-            }
-          } catch (e) {
-            console.error('Parse error:', e);
-          }
+        if (data.type === 'text') {
+          console.log('[SSE] Received text chunk, length:', data.content?.length);
+          onChunk(data.content ?? '');
+        } else if (data.type === 'done') {
+          console.log('[SSE] Received DONE signal, calling onComplete and returning');
+          onComplete();
+          return;
+        } else if (data.type === 'error') {
+          onError(new Error(data.error || '生成失败'));
+          return;
+        } else if (typeof data === 'string') {
+          onChunk(data);
         }
       }
     }
 
+    console.log('[SSE] Loop exited naturally, calling onComplete');
     onComplete();
   } catch (error) {
     onError(error);

@@ -1,7 +1,10 @@
 import { X, Loader } from 'lucide-react';
+import { renderMarkdown } from '../../utils/markdownRenderer';
 
 export default function ProcessingModal({ isOpen, onClose, progress, currentText }) {
   if (!isOpen) return null;
+
+  const renderedText = renderMarkdown(currentText);
 
   return (
     <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-6">
@@ -43,7 +46,7 @@ export default function ProcessingModal({ isOpen, onClose, progress, currentText
           <div className="prose prose-sm max-w-none">
             <div
               className="text-gray-700 whitespace-pre-wrap"
-              dangerouslySetInnerHTML={{ __html: currentText }}
+              dangerouslySetInnerHTML={{ __html: renderedText }}
             />
           </div>
         </div>

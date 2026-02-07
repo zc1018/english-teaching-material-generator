@@ -1,0 +1,442 @@
+/* TED 主题样式 */
+:root {
+  --ted-red: #E62B1E;
+  --ted-dark: #1A1A1A;
+  --ted-gray: #666666;
+  --ted-light: #F5F5F5;
+  --ted-white: #FFFFFF;
+  --ted-hover: #CC2519;
+
+  --font-en: 'Helvetica Neue', Arial, sans-serif;
+  --font-zh: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  --font-code: 'Fira Code', Consolas, 'Courier New', monospace;
+}
+
+/* TED 容器 */
+.ted-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: var(--ted-white);
+  font-family: var(--font-en);
+}
+
+/* TED 头部 */
+.ted-header {
+  border-bottom: 3px solid var(--ted-red);
+  padding-bottom: 30px;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.ted-logo {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--ted-red);
+  letter-spacing: 2px;
+}
+
+.ted-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--ted-dark);
+  line-height: 1.3;
+  margin: 10px 0;
+}
+
+.ted-subtitle {
+  font-size: 18px;
+  color: var(--ted-gray);
+  font-weight: 400;
+}
+
+/* 语言切换按钮 */
+.language-toggle {
+  display: flex;
+  gap: 10px;
+  background: var(--ted-light);
+  padding: 6px;
+  border-radius: 12px;
+}
+
+.language-toggle button {
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  color: var(--ted-gray);
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.language-toggle button:hover {
+  background: rgba(230, 43, 30, 0.1);
+  color: var(--ted-red);
+}
+
+.language-toggle button.active {
+  background: var(--ted-red);
+  color: var(--ted-white);
+  box-shadow: 0 2px 8px rgba(230, 43, 30, 0.3);
+}
+
+/* TED 章节 */
+.ted-section {
+  background: var(--ted-white);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 40px;
+  margin-bottom: 40px;
+  transition: box-shadow 0.3s;
+}
+
+.ted-section:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.ted-section-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ted-red);
+  border-bottom: 3px solid var(--ted-red);
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.ted-section-title .en {
+  font-family: var(--font-en);
+}
+
+.ted-section-title .zh {
+  font-family: var(--font-zh);
+  color: var(--ted-gray);
+  font-size: 24px;
+}
+
+/* 双语内容布局 */
+.bilingual-content {
+  display: grid;
+  grid-template-columns: 58% 42%;
+  gap: 40px;
+  align-items: start;
+}
+
+.bilingual-content.single-en {
+  grid-template-columns: 100%;
+}
+
+.bilingual-content.single-zh {
+  grid-template-columns: 100%;
+}
+
+.english-column {
+  font-family: var(--font-en);
+  font-size: 17px;
+  line-height: 1.9;
+  color: var(--ted-dark);
+}
+
+.chinese-column {
+  font-family: var(--font-zh);
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--ted-gray);
+  padding-left: 30px;
+  border-left: 3px solid var(--ted-light);
+}
+
+/* TED 表格 */
+.ted-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin: 20px 0;
+}
+
+.ted-table thead {
+  background: var(--ted-red);
+  color: var(--ted-white);
+}
+
+.ted-table th {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+.ted-table tbody tr {
+  border-bottom: 1px solid #E5E5E5;
+  transition: background 0.2s;
+}
+
+.ted-table tbody tr:nth-child(even) {
+  background: var(--ted-light);
+}
+
+.ted-table tbody tr:hover {
+  background: #FFE6E6;
+}
+
+.ted-table td {
+  padding: 14px 20px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.ted-table td:first-child {
+  font-weight: 600;
+  color: var(--ted-red);
+}
+
+/* 可折叠卡片 */
+.collapsible-card {
+  border: 2px solid var(--ted-light);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.collapsible-card:hover {
+  border-color: var(--ted-red);
+}
+
+.collapsible-header {
+  padding: 20px 25px;
+  background: var(--ted-light);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.collapsible-header:hover {
+  background: #EBEBEB;
+}
+
+.collapsible-header h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ted-dark);
+  margin: 0;
+}
+
+.collapsible-icon {
+  transition: transform 0.3s;
+  color: var(--ted-red);
+}
+
+.collapsible-icon.open {
+  transform: rotate(180deg);
+}
+
+.collapsible-content {
+  padding: 25px;
+  background: var(--ted-white);
+}
+
+/* TED 段落样式 */
+.ted-content p {
+  margin-bottom: 20px;
+  line-height: 1.9;
+}
+
+.ted-content h1,
+.ted-content h2,
+.ted-content h3 {
+  color: var(--ted-red);
+  font-weight: 700;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.ted-content h1 {
+  font-size: 32px;
+}
+
+.ted-content h2 {
+  font-size: 26px;
+}
+
+.ted-content h3 {
+  font-size: 22px;
+}
+
+.ted-content ul,
+.ted-content ol {
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+
+.ted-content li {
+  margin-bottom: 10px;
+  line-height: 1.8;
+}
+
+.ted-content code {
+  font-family: var(--font-code);
+  background: var(--ted-light);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--ted-red);
+}
+
+.ted-content pre {
+  background: var(--ted-dark);
+  color: var(--ted-white);
+  padding: 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.ted-content pre code {
+  background: transparent;
+  color: var(--ted-white);
+  padding: 0;
+}
+
+.ted-content blockquote {
+  border-left: 4px solid var(--ted-red);
+  padding-left: 20px;
+  margin: 20px 0;
+  color: var(--ted-gray);
+  font-style: italic;
+}
+
+.ted-content strong {
+  color: var(--ted-red);
+  font-weight: 700;
+}
+
+/* 导出按钮 */
+.export-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 40px 0;
+  padding: 30px;
+  background: var(--ted-light);
+  border-radius: 12px;
+}
+
+.export-button {
+  padding: 12px 24px;
+  background: var(--ted-white);
+  border: 2px solid var(--ted-red);
+  color: var(--ted-red);
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.export-button:hover {
+  background: var(--ted-red);
+  color: var(--ted-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(230, 43, 30, 0.3);
+}
+
+.export-button:active {
+  transform: translateY(0);
+}
+
+.export-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .ted-container {
+    padding: 20px 15px;
+  }
+
+  .ted-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ted-logo {
+    font-size: 36px;
+  }
+
+  .ted-title {
+    font-size: 28px;
+  }
+
+  .ted-section {
+    padding: 25px 20px;
+  }
+
+  .ted-section-title {
+    font-size: 22px;
+  }
+
+  .bilingual-content {
+    grid-template-columns: 100%;
+    gap: 25px;
+  }
+
+  .chinese-column {
+    padding-left: 0;
+    border-left: none;
+    border-top: 3px solid var(--ted-light);
+    padding-top: 25px;
+  }
+
+  .ted-table {
+    font-size: 14px;
+  }
+
+  .ted-table th,
+  .ted-table td {
+    padding: 10px 12px;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+  }
+
+  .export-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .ted-container {
+    max-width: 100%;
+  }
+
+  .language-toggle,
+  .export-buttons {
+    display: none;
+  }
+
+  .ted-section {
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+}

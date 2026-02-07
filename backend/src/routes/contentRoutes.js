@@ -2,9 +2,50 @@ import express from 'express';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import TurndownService from 'turndown';
+import { isUrlSafe } from '../utils/urlSafety.js';
 
 const router = express.Router();
 const turndownService = new TurndownService();
+
+function createUnsafeError(message) {
+  const error = new Error(message);
+  error.status = 403;
+  return error;
+}
+
+async function fetchWithRedirects(startUrl, requestOptions, maxRedirects = 3) {
+  let currentUrl = startUrl;
+
+  for (let i = 0; i <= maxRedirects; i += 1) {
+    const safe = await isUrlSafe(currentUrl);
+    if (!safe) {
+      throw createUnsafeError('不允许访问该URL（安全限制）');
+    }
+
+    const response = await axios.get(currentUrl, {
+      ...requestOptions,
+      maxRedirects: 0,
+      validateStatus: (status) => status >= 200 && status < 400
+    });
+
+    if (response.status >= 300 && response.status < 400) {
+      const location = response.headers.location;
+      if (!location) {
+        const error = new Error('重定向缺少目标地址');
+        error.status = 400;
+        throw error;
+      }
+      currentUrl = new URL(location, currentUrl).toString();
+      continue;
+    }
+
+    return response;
+  }
+
+  const error = new Error('重定向次数过多');
+  error.status = 400;
+  throw error;
+}
 
 // 从URL提取内容
 router.post('/extract-url', async (req, res, next) => {
@@ -15,16 +56,18 @@ router.post('/extract-url', async (req, res, next) => {
       return res.status(400).json({ error: '缺少URL参数' });
     }
 
-    // 验证URL格式
+    // 验证URL格式和安全性
     try {
       new URL(url);
     } catch {
       return res.status(400).json({ error: '无效的URL格式' });
     }
 
-    // 获取网页内容
-    const response = await axios.get(url, {
+    // 获取网页内容（含重定向安全检查）
+    const response = await fetchWithRedirects(url, {
       timeout: 10000,
+      maxContentLength: 10 * 1024 * 1024, // 限制响应大小为 10MB
+      maxBodyLength: 10 * 1024 * 1024,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       }

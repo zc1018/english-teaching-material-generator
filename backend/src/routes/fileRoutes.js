@@ -2,6 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs/promises';
 import { parseFile } from '../services/fileParser.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -49,14 +50,27 @@ router.post('/upload', upload.single('file'), async (req, res, next) => {
       return res.status(400).json({ error: '没有上传文件' });
     }
 
-    const content = await parseFile(req.file.path, req.file.mimetype);
+    const filePath = req.file.path;
 
-    res.json({
-      success: true,
-      filename: req.file.originalname,
-      content,
-      size: req.file.size
-    });
+    try {
+      // 解析文件
+      const content = await parseFile(filePath, req.file.mimetype);
+
+      res.json({
+        success: true,
+        filename: req.file.originalname,
+        content,
+        size: req.file.size
+      });
+    } finally {
+      // 无论成功或失败，都删除临时文件
+      try {
+        await fs.unlink(filePath);
+        console.log(`🗑️  Deleted temporary file: ${filePath}`);
+      } catch (unlinkError) {
+        console.error('Failed to delete temporary file:', unlinkError);
+      }
+    }
   } catch (error) {
     next(error);
   }
